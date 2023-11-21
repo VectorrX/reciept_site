@@ -4,10 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Intents</title>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background: url('https://wallpapercrafter.com/sizes/2560x1440/352-cars-parking-backlight-neon-night-4k.jpg') center center fixed;
+            background-size: cover;
+            color:aquamarine; /* Text color on top of the background image */
+        }
+
+        h1 {
+            color: #007bff; /* Bootstrap primary color */
+        }
+
+        .card {
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to the card */
+        }
+
+        .card-body {
+            background:lightgoldenrodyellow; /* Transparent black background for card body */
+            color:black; /* Card body text color */
+        }
+
+        .card-title {
+            color: #007bff; /* Card title color */
+        }
+
+        .card-text strong {
+            color:black; /* Strong text color */
+        }
+    </style>
 </head>
 <body>
-    <h1>Payment Intents</h1>
-    <ul id="paymentIntentsList"></ul>
+    <div class="container">
+        <h1 class="mt-5">Payment Receipt</h1>
+        <div class="card">
+            <div class="card-body" id="paymentIntentCard">
+            </div>
+        </div>
+    </div>
 
     <script>
         // Function to fetch payment intents from the API
@@ -26,21 +63,18 @@
                     throw new Error(`Failed to fetch payment intents. Status: ${response.status}`);
                 }
 
-                const paymentIntents = await response.json();
+                const paymentIntent = (await response.json()).data[0]; // Get the first payment intent
 
-                // Process payment intents and update the content
-                const paymentIntentsList = document.getElementById('paymentIntentsList');
-                const intent = paymentIntents.data[0]; // Get the first payment intent
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                    <strong>Payment Intent ID:</strong> ${intent.id}<br>
-                    <strong>Object Type:</strong> ${intent.object}<br>
-                    <strong>Amount:</strong> ₹${(intent.amount / 100).toFixed(2)}<br>
-                    <strong>Amount Received:</strong> ₹${(intent.amount_received / 100).toFixed(2)}<br>
-                    <strong>Status:</strong> ${intent.status}<br>
-                    ------------------------<br>
+                // Process payment intent and update the content in a card
+                const paymentIntentCard = document.getElementById('paymentIntentCard');
+                paymentIntentCard.innerHTML = `
+                    <h5 class="card-title">Payment Receipt Information</h5>
+                    <p class="card-text"><strong>Payment Intent ID:</strong> ${paymentIntent.id}</p>
+                    <p class="card-text"><strong>Object Type:</strong> ${paymentIntent.object}</p>
+                    <p class="card-text"><strong>Amount:</strong> ₹${(paymentIntent.amount / 100).toFixed(2)}</p>
+                    <p class="card-text"><strong>Amount Received:</strong> ₹${(paymentIntent.amount_received / 100).toFixed(2)}</p>
+                    <p class="card-text"><strong>Status:</strong> ${paymentIntent.status}</p>
                 `;
-                paymentIntentsList.appendChild(listItem);
             } catch (error) {
                 console.error('Error:', error.message);
             }
@@ -49,5 +83,10 @@
         // Fetch payment intents on page load
         fetchPaymentIntents();
     </script>
+
+    <!-- Add Bootstrap JS and Popper.js scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>

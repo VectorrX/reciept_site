@@ -69,7 +69,7 @@
             const paymentIntent = (await response.json()).data[0]; // Get the first payment intent
 
             // Fetch slot number from your server
-            const slotNumberResponse = await fetch('https://your-server.com/getSlotNumber');
+            const slotNumberResponse = await fetch('http://localhost:3000/getSlotNumber');
             const slotNumberData = await slotNumberResponse.json();
 
             // Process payment intent and slot number, then update the content in a card

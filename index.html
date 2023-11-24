@@ -48,6 +48,8 @@
 
     <!-- Your existing HTML content -->
 
+<!-- Your existing HTML content -->
+
 <script>
     // Function to fetch payment intents and slot number from the API
     const fetchPaymentIntents = async () => {
@@ -68,11 +70,7 @@
 
             const paymentIntent = (await response.json()).data[0]; // Get the first payment intent
 
-            // Fetch slot number from your server
-            const slotNumberResponse = await fetch('http://localhost:3000/getSlotNumber');
-            const slotNumberData = await slotNumberResponse.json();
-
-            // Process payment intent and slot number, then update the content in a card
+            // Process payment intent and update the content in a card
             const paymentIntentCard = document.getElementById('paymentIntentCard');
             paymentIntentCard.innerHTML = `
                 <h5 class="card-title">Payment Receipt Information</h5>
@@ -81,7 +79,41 @@
                 <p class="card-text"><strong>Amount:</strong> ₹${(paymentIntent.amount / 100).toFixed(2)}</p>
                 <p class="card-text"><strong>Amount Received:</strong> ₹${(paymentIntent.amount_received / 100).toFixed(2)}</p>
                 <p class="card-text"><strong>Status:</strong> ${paymentIntent.status}</p>
-                <p class="card-text"><strong>Slot Number:</strong> ${slotNumberData.slotNumber}</p>`;
+            `;
+
+            // Assuming you have the paymentIntentId and startTime from your payment logic
+            const paymentIntentId = paymentIntent.id;
+            const startTime = 'your_start_time'; // Update this with your actual start time
+
+            // Make a request to the '/webhook' endpoint (similar to what you're doing already)
+            fetch('http://localhost:3000/webhook', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: 'payment_intent.succeeded',
+                    data: {
+                        object: {
+                            id: paymentIntentId,
+                        },
+                    },
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Webhook response:', data);
+
+                    // After processing the webhook, make a request to fetch the updated slot number
+                    return fetch('http://localhost:3000/getSlotNumber');
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Updated Slot Number:', data.slotNumber);
+                    // Now you have the updated slot number, you can use it as needed.
+                })
+                .catch(error => console.error('Error:', error));
+
         } catch (error) {
             console.error('Error:', error.message);
         }
@@ -97,3 +129,4 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
+

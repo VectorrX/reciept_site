@@ -11,7 +11,7 @@
             padding: 20px;
             background: url('https://wallpapercrafter.com/sizes/2560x1440/352-cars-parking-backlight-neon-night-4k.jpg') center center fixed;
             background-size: cover;
-            color:aquamarine; /* Text color on top of the background image */
+            color: aquamarine; /* Text color on top of the background image */
         }
 
         h1 {
@@ -24,8 +24,8 @@
         }
 
         .card-body {
-            background:lightgoldenrodyellow; /* Transparent black background for card body */
-            color:black; /* Card body text color */
+            background: lightgoldenrodyellow; /* Transparent black background for card body */
+            color: black; /* Card body text color */
         }
 
         .card-title {
@@ -33,7 +33,7 @@
         }
 
         .card-text strong {
-            color:black; /* Strong text color */
+            color: black; /* Strong text color */
         }
     </style>
 </head>
@@ -48,86 +48,79 @@
 
     <!-- Your existing HTML content -->
 
-<!-- Your existing HTML content -->
+    <!-- ... (existing HTML) ... -->
 
-<!-- ... (existing HTML) ... -->
+    <!-- Your existing HTML content -->
 
-<!-- ... (existing HTML) ... -->
+    <script>
+        // Function to fetch payment intents and update the content in a card
+        const fetchPaymentIntents = async () => {
+            try {
+                const stripeSecretKey = 'sk_test_51OErf1SJWtVxyJd5HCDNnJk9OxstOJIxGBDJfvAzbbn3n6GSrqhZiYMcpaTv8EjEpi1nT4o9s8ckOkbIYbpifeug00wrV1MlnM';
 
-<!-- ... (existing HTML) ... -->
+                // Fetch payment intents from the Stripe API
+                const response = await fetch('https://api.stripe.com/v1/payment_intents?limit=1', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${stripeSecretKey}`,
+                    },
+                });
 
-<!-- Your existing HTML content -->
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch payment intents. Status: ${response.status}`);
+                }
 
-<!-- ... (existing HTML) ... -->
+                const paymentIntent = (await response.json()).data[0]; // Get the first payment intent
 
-<!-- Your existing HTML content -->
-
-<script>
-    // Function to fetch payment intents and slot number from the API
-    const fetchPaymentIntents = async () => {
-        try {
-            const stripeSecretKey = 'sk_test_51OErf1SJWtVxyJd5HCDNnJk9OxstOJIxGBDJfvAzbbn3n6GSrqhZiYMcpaTv8EjEpi1nT4o9s8ckOkbIYbpifeug00wrV1MlnM';
-
-            // Fetch payment intents from the Stripe API
-            const response = await fetch('https://api.stripe.com/v1/payment_intents?limit=1', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${stripeSecretKey}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to fetch payment intents. Status: ${response.status}`);
+                // Process payment intent and update the content in a card
+                const paymentIntentCard = document.getElementById('paymentIntentCard');
+                paymentIntentCard.innerHTML = `
+                    <h5 class="card-title">Payment Receipt Information</h5>
+                    <p class="card-text"><strong>Payment Intent ID:</strong> ${paymentIntent.id}</p>
+                    <p class="card-text"><strong>Object Type:</strong> ${paymentIntent.object}</p>
+                    <p class="card-text"><strong>Amount:</strong> ₹${(paymentIntent.amount / 100).toFixed(2)}</p>
+                    <p class="card-text"><strong>Amount Received:</strong> ₹${(paymentIntent.amount_received / 100).toFixed(2)}</p>
+                    <p class="card-text"><strong>Status:</strong> ${paymentIntent.status}</p>
+                `;
+            } catch (error) {
+                console.error('Error:', error.message);
             }
+        };
 
-            const paymentIntent = (await response.json()).data[0]; // Get the first payment intent
+        // Function to fetch updated slot number from the API
+        const fetchUpdatedSlotNumber = async () => {
+            try {
+                // Make a request to the '/getSlotNumber' endpoint
+                const response = await fetch('http://localhost:3000/getSlotNumber', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
 
-            // Process payment intent and update the content in a card
-            const paymentIntentCard = document.getElementById('paymentIntentCard');
-            paymentIntentCard.innerHTML = `
-                <h5 class="card-title">Payment Receipt Information</h5>
-                <p class="card-text"><strong>Payment Intent ID:</strong> ${paymentIntent.id}</p>
-                <p class="card-text"><strong>Object Type:</strong> ${paymentIntent.object}</p>
-                <p class="card-text"><strong>Amount:</strong> ₹${(paymentIntent.amount / 100).toFixed(2)}</p>
-                <p class="card-text"><strong>Amount Received:</strong> ₹${(paymentIntent.amount_received / 100).toFixed(2)}</p>
-                <p class="card-text"><strong>Status:</strong> ${paymentIntent.status}</p>
-            `;
-    // Function to fetch updated slot number from the API
-    const fetchUpdatedSlotNumber = async () => {
-        try {
-            // Make a request to the '/getSlotNumber' endpoint
-            const response = await fetch('http://localhost:3000/getSlotNumber', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch updated slot number. Status: ${response.status}`);
+                }
 
-            if (!response.ok) {
-                throw new Error(`Failed to fetch updated slot number. Status: ${response.status}`);
+                const data = await response.json();
+                console.log('Updated Slot Number:', data.slotNumber);
+                // Now you have the updated slot number, you can use it as needed.
+
+            } catch (error) {
+                console.error('Error:', error.message);
             }
+        };
 
-            const data = await response.json();
-            console.log('Updated Slot Number:', data.slotNumber);
-            // Now you have the updated slot number, you can use it as needed.
+        // Call fetchPaymentIntents and fetchUpdatedSlotNumber when the page is loaded
+        window.onload = () => {
+            fetchPaymentIntents();
+            fetchUpdatedSlotNumber();
+        };
+    </script>
 
-        } catch (error) {
-            console.error('Error:', error.message);
-        }
-    };
-
-    // Call fetchUpdatedSlotNumber when the page is loaded
-    window.onload = fetchUpdatedSlotNumber;
-</script>
-
-<!-- ... (existing scripts) ... -->
-
-<!-- ... (existing scripts) ... -->
-
-<!-- Add Bootstrap JS and Popper.js scripts -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Add Bootstrap JS and Popper.js scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
-

@@ -11,7 +11,7 @@
             padding: 20px;
             background: url('https://wallpapercrafter.com/sizes/2560x1440/352-cars-parking-backlight-neon-night-4k.jpg') center center fixed;
             background-size: cover;
-            color:aquamarine; /* Text color on top of the background image */
+            color: aquamarine; /* Text color on top of the background image */
         }
 
         h1 {
@@ -24,8 +24,8 @@
         }
 
         .card-body {
-            background:lightgoldenrodyellow; /* Transparent black background for card body */
-            color:black; /* Card body text color */
+            background: lightgoldenrodyellow; /* Transparent black background for card body */
+            color: black; /* Card body text color */
         }
 
         .card-title {
@@ -33,7 +33,7 @@
         }
 
         .card-text strong {
-            color:black; /* Strong text color */
+            color: black; /* Strong text color */
         }
     </style>
 </head>
@@ -62,19 +62,17 @@
                     throw new Error(`Failed to fetch payment intents. Status: ${response.status}`);
                 }
 
-                const paymentIntent = (await response.json()).data[0];
-
-                // Get the slot number from the response (assuming the response format)
-                const slotNumber = paymentIntent.slotNumber;
+                const responseJson = await response.json();
+                const slotNumber = responseJson.slotNumber;
 
                 const paymentIntentCard = document.getElementById('paymentIntentCard');
                 paymentIntentCard.innerHTML = `
                     <h5 class="card-title">Payment Receipt Information</h5>
-                    <p class="card-text"><strong>Payment Intent ID:</strong> ${paymentIntent.id}</p>
-                    <p class="card-text"><strong>Object Type:</strong> ${paymentIntent.object}</p>
-                    <p class="card-text"><strong>Amount:</strong> ₹${(paymentIntent.amount / 100).toFixed(2)}</p>
-                    <p class="card-text"><strong>Amount Received:</strong> ₹${(paymentIntent.amount_received / 100).toFixed(2)}</p>
-                    <p class="card-text"><strong>Status:</strong> ${paymentIntent.status}</p>
+                    <p class="card-text"><strong>Payment Intent ID:</strong> ${responseJson.id}</p>
+                    <p class="card-text"><strong>Object Type:</strong> ${responseJson.object}</p>
+                    <p class="card-text"><strong>Amount:</strong> ₹${(responseJson.amount / 100).toFixed(2)}</p>
+                    <p class="card-text"><strong>Amount Received:</strong> ₹${(responseJson.amount_received / 100).toFixed(2)}</p>
+                    <p class="card-text"><strong>Status:</strong> ${responseJson.status}</p>
                     <p class="card-text"><strong>Slot Number:</strong> ${slotNumber}</p>
                 `;
             } catch (error) {

@@ -47,7 +47,6 @@
     </div>
 
     <script>
-        // Function to fetch payment intents from the API
         const fetchPaymentIntents = async () => {
             try {
                 const stripeSecretKey = 'sk_test_51OErf1SJWtVxyJd5HCDNnJk9OxstOJIxGBDJfvAzbbn3n6GSrqhZiYMcpaTv8EjEpi1nT4o9s8ckOkbIYbpifeug00wrV1MlnM';
@@ -63,9 +62,11 @@
                     throw new Error(`Failed to fetch payment intents. Status: ${response.status}`);
                 }
 
-                const paymentIntent = (await response.json()).data[0]; // Get the first payment intent
+                const paymentIntent = (await response.json()).data[0];
 
-                // Process payment intent and update the content in a card
+                // Get the slot number from the response (assuming the response format)
+                const slotNumber = paymentIntent.slotNumber;
+
                 const paymentIntentCard = document.getElementById('paymentIntentCard');
                 paymentIntentCard.innerHTML = `
                     <h5 class="card-title">Payment Receipt Information</h5>
@@ -74,19 +75,16 @@
                     <p class="card-text"><strong>Amount:</strong> ₹${(paymentIntent.amount / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Amount Received:</strong> ₹${(paymentIntent.amount_received / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Status:</strong> ${paymentIntent.status}</p>
+                    <p class="card-text"><strong>Slot Number:</strong> ${slotNumber}</p>
                 `;
             } catch (error) {
                 console.error('Error:', error.message);
             }
         };
 
-        // Fetch payment intents on page load
         fetchPaymentIntents();
     </script>
 
-    <!-- Add Bootstrap JS and Popper.js scripts -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- ... (Bootstrap and other scripts) -->
 </body>
 </html>

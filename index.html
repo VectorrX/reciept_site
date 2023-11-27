@@ -74,6 +74,16 @@
 
                 const slotNumber = await serverResponse.json();
 
+                // Fetch Vehicle Number from your server.js
+                const serverResponse1 = await fetch('http://localhost:3000/fetch-Vnum', {
+                    method: 'GET',
+                });
+
+                if (!serverResponse1.ok) {
+                    throw new Error(`Failed to fetch slot number. Status: ${serverResponse1.status}`);
+                }
+
+                const Vnum = await serverResponse1.json();
                 // Process payment intent and slot number, update the content in a card
                 const paymentIntentCard = document.getElementById('paymentIntentCard');
                 paymentIntentCard.innerHTML = `
@@ -84,6 +94,7 @@
                     <p class="card-text"><strong>Amount Received:</strong> ₹${(stripePaymentIntent.amount_received / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Status:</strong> ${stripePaymentIntent.status}</p>
                     <p class="card-text"><strong>Slot Number:</strong> ${slotNumber.slotNumber}</p>
+                    <p class="card-text"><strong>Vehicle Number:</strong> ${Vnum.Vnum}</p>
                 `;
             } catch (error) {
                 console.error('Error:', error.message);

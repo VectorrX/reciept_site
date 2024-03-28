@@ -64,7 +64,7 @@
                 const stripePaymentIntent = (await stripeResponse.json()).data[0]; // Get the first payment intent
 
                 // Fetch slot number from your server.js
-                const serverResponse = await fetch('http://localhost:3000/fetch-slot', {
+                const serverResponse = await fetch('https://parking-app-emzt.onrender.com/fetch-slot', {
                     method: 'GET',
                 });
 
@@ -75,7 +75,7 @@
                 const slotNumber = await serverResponse.json();
 
                 // Fetch Vehicle Number from your server.js
-                const serverResponse1 = await fetch('http://localhost:3000/fetch-Vnum', {
+                const serverResponse1 = await fetch('https://parking-app-emzt.onrender.com/fetch-Vnum', {
                     method: 'GET',
                 });
 

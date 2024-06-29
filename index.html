@@ -79,7 +79,7 @@
                 const paymentIntentCard = document.getElementById('paymentIntentCard');
                 paymentIntentCard.innerHTML = `
                     <h5 class="card-title">Payment Receipt Information</h5>
-                    <p class="card-text"><strong>Payment Intent ID:</strong> ${stripePaymentIntent.id}</p>
+                    // <p class="card-text"><strong>Payment Intent ID:</strong> ${stripePaymentIntent.id}</p>
                     <p class="card-text"><strong>Object Type:</strong> ${stripePaymentIntent.object}</p>
                     <p class="card-text"><strong>Amount:</strong> ₹${(stripePaymentIntent.amount / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Amount Received:</strong> ₹${(stripePaymentIntent.amount_received / 100).toFixed(2)}</p>

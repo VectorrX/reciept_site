@@ -83,7 +83,7 @@
                     <p class="card-text"><strong>Amount:</strong> ₹${(stripePaymentIntent.amount / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Amount Received:</strong> ₹${(stripePaymentIntent.amount_received / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Status:</strong> ${stripePaymentIntent.status}</p>
-                    <p class="card-text"><strong>Real Estate No.:</strong> ${serverResponse.json.realno}</p>
+                    <p class="card-text"><strong>Real Estate No.:</strong> ${serverResponse.data}</p>
                     
                 `;
             } catch (error) {

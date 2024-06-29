@@ -68,10 +68,6 @@
                     method: 'GET',
                 });
 
-                if (!serverResponse.ok) {
-                    throw new Error(`Failed to fetch realno. Status: ${serverResponse.status}`);
-                }
-
 
                
                 // Process payment intent and slot number, update the content in a card

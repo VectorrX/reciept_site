@@ -9,7 +9,7 @@
     <style>
         body {
             padding: 20px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyHW8EN6slLP_HsAugduSFsyq5ZdfJsBlIw&usqp=CAU') center center fixed;
+            background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.indiafilings.com%2Flearn%2Fhow-to-start-real-estate-business%2F&psig=AOvVaw2M_SqNeloZXbIHvk14bqnw&ust=1719737459643000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCNjvjbu3gIcDFQAAAAAdAAAAABAE') center center fixed;
             background-size: cover;
             color: aquamarine; /* Text color on top of the background image */
         }
@@ -64,7 +64,7 @@
                 const stripePaymentIntent = (await stripeResponse.json()).data[0]; // Get the first payment intent
 
                 // Fetch slot number from your server.js
-                const serverResponse = await fetch('https://parking-app-emzt.onrender.com/fetch-slot', {
+                const serverResponse = await fetch('https:localhost:8080/fetch-slot', {
                     method: 'GET',
                 });
 
@@ -72,18 +72,9 @@
                     throw new Error(`Failed to fetch slot number. Status: ${serverResponse.status}`);
                 }
 
-                const slotNumber = await serverResponse.json();
+              
 
-                // Fetch Vehicle Number from your server.js
-                const serverResponse1 = await fetch('https://parking-app-emzt.onrender.com/fetch-Vnum', {
-                    method: 'GET',
-                });
-
-                if (!serverResponse1.ok) {
-                    throw new Error(`Failed to fetch slot number. Status: ${serverResponse1.status}`);
-                }
-
-                const Vnum = await serverResponse1.json();
+               
                 // Process payment intent and slot number, update the content in a card
                 const paymentIntentCard = document.getElementById('paymentIntentCard');
                 paymentIntentCard.innerHTML = `
@@ -93,8 +84,7 @@
                     <p class="card-text"><strong>Amount:</strong> ₹${(stripePaymentIntent.amount / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Amount Received:</strong> ₹${(stripePaymentIntent.amount_received / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Status:</strong> ${stripePaymentIntent.status}</p>
-                    <p class="card-text"><strong>Slot Number:</strong> ${slotNumber.slotNumber}</p>
-                    <p class="card-text"><strong>Vehicle Number:</strong> ${Vnum.Vnum}</p>
+                    
                 `;
             } catch (error) {
                 console.error('Error:', error.message);

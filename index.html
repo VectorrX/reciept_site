@@ -67,7 +67,9 @@
                 const serverResponse = await fetch('http:localhost:8080/fetch-realno', {
                     method: 'GET',
                 });
-
+                if (!servereResponse.ok) {
+                    throw new Error(`Failed to fetch realno. : ${serverResponse.status}`);
+                }
 
                
                 // Process payment intent and slot number, update the content in a card

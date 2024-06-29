@@ -67,7 +67,7 @@
                 const serverResponse = await fetch('http:localhost:8080/fetch-realno', {
                     method: 'GET',
                 });
-                if (!servereResponse.ok) {
+                if (!serverResponse.ok) {
                     throw new Error(`Failed to fetch realno. : ${serverResponse.status}`);
                 }
 

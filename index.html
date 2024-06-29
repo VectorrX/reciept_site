@@ -63,14 +63,6 @@
 
                 const stripePaymentIntent = (await stripeResponse.json()).data[0]; // Get the first payment intent
 
-                // Fetch slot number from your server.js
-                const serverResponse = await fetch('http:localhost:8080/fetch-realno', {
-                    method: 'GET',
-                });
-                if (serverResponse.status !== 200) {
-                    throw new Error(`Failed to fetch realno. : ${serverResponse.status}`);
-                }
-
                
                 // Process payment intent and slot number, update the content in a card
                 const paymentIntentCard = document.getElementById('paymentIntentCard');
@@ -81,7 +73,6 @@
                     <p class="card-text"><strong>Amount:</strong> ₹${(stripePaymentIntent.amount / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Amount Received:</strong> ₹${(stripePaymentIntent.amount_received / 100).toFixed(2)}</p>
                     <p class="card-text"><strong>Status:</strong> ${stripePaymentIntent.status}</p>
-                    <p class="card-text"><strong>Real Estate No.:</strong> ${serverResponse.data}</p>
                     
                 `;
             } catch (error) {

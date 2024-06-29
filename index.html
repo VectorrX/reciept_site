@@ -64,7 +64,7 @@
                 const stripePaymentIntent = (await stripeResponse.json()).data[0]; // Get the first payment intent
 
                 // Fetch slot number from your server.js
-                const serverResponse = await fetch('https:localhost:8080/fetch-slot', {
+                const serverResponse = await fetch('https:localhost:8080/fetch-realno', {
                     method: 'GET',
                 });
 
@@ -72,7 +72,6 @@
                     throw new Error(`Failed to fetch slot number. Status: ${serverResponse.status}`);
                 }
 
-              
 
                
                 // Process payment intent and slot number, update the content in a card
